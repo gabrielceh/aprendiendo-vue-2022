@@ -51,7 +51,7 @@ export const useDatabaseStore = defineStore('database', {
 
     // https://firebase.google.com/docs/firestore/manage-data/add-data?hl=es&authuser=0#add_a_document
     async addUrl(name) {
-      this.loadingDocs = true;
+      this.loading = true;
       try {
         const objetoDoc = {
           name,
@@ -62,14 +62,15 @@ export const useDatabaseStore = defineStore('database', {
         // console.log(docRef);
         this.documents.push({ id: docRef.id, ...objetoDoc });
       } catch (error) {
-        console.log(error);
+        console.log(error.code);
+        return error.code;
       } finally {
-        this.loadingDocs = false;
+        this.loading = false;
       }
     },
     // https://firebase.google.com/docs/firestore/manage-data/delete-data?hl=es&authuser=0#delete_documents
     async deleteUrl(id) {
-      this.loadingDocs = true;
+      this.loading = true;
       try {
         console.log(id);
         const docRef = doc(db, 'urls', id);
@@ -87,13 +88,14 @@ export const useDatabaseStore = defineStore('database', {
         this.documents = this.documents.filter((item) => item.id !== id);
       } catch (error) {
         console.log(error);
+        return error.message;
       } finally {
-        this.loadingDocs = false;
+        this.loading = false;
       }
     },
 
     async readUrl(id) {
-      this.loadingDocs = true;
+      this.loading = true;
       try {
         const docRef = doc(db, 'urls', id);
         // https://firebase.google.com/docs/firestore/query-data/get-data?hl=es&authuser=0#get_a_document
@@ -111,12 +113,13 @@ export const useDatabaseStore = defineStore('database', {
       } catch (error) {
         console.log(error);
       } finally {
-        this.loadingDocs = false;
+        this.loading = false;
       }
     },
 
     // https://firebase.google.com/docs/firestore/manage-data/add-data?hl=es&authuser=0#update-data
     async editUrl(id, name) {
+      this.loading = true;
       try {
         const docRef = doc(db, 'urls', id);
         // https://firebase.google.com/docs/firestore/query-data/get-data?hl=es&authuser=0#get_a_document
@@ -141,7 +144,9 @@ export const useDatabaseStore = defineStore('database', {
         router;
       } catch (error) {
         console.log(error);
+        return error.message;
       } finally {
+        this.loading = false;
       }
     },
   },

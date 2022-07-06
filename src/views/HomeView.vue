@@ -1,12 +1,13 @@
 <template>
   <div>
-    <h2>Home</h2>
-    <p>{{userStore.userData?.email}}</p>
+    <h2>Home - {{userStore.userData?.email}}</h2>
 
-    <form @submit.prevent="handleSubmit">
+    <!-- <form @submit.prevent="handleSubmit">
       <input type="text" placeholder="Ingrese una URL" v-model="url">
       <button type="submit">Agregar</button>
-    </form>
+    </form> -->
+
+    <AddForm/>
 
     <p v-if="databaseStore.loadingDocs">loading...</p>
     <UrlsList v-else/>
@@ -20,6 +21,8 @@
   import { useUserStore } from '../stores/user';
 
   import UrlsList from '../components/UrlsList.vue'
+  import AddForm from '../components/AddForm.vue';
+  
 
   document.title = 'Home'
 
@@ -29,10 +32,10 @@
 
   const url = ref('')
 
-  const handleSubmit = () => {
-    // validar url
-    databaseStore.addUrl(url.value)
-  }
+  // const handleSubmit = () => {
+  //   // validar url
+  //   databaseStore.addUrl(url.value)
+  // }
 
   onMounted(async()=>{
     await databaseStore.getUrls()

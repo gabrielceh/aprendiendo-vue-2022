@@ -11,7 +11,7 @@ const requiereAutenticacion = async (to, from, next) => {
   const userStore = useUserStore();
   userStore.loadingSesion = true;
   const user = await userStore.currentUser();
-  if (user) {
+  if (user && user.emailVerified) {
     next();
   } else {
     next('/login');
@@ -23,7 +23,7 @@ const noRequiereAutenticacion = async (to, from, next) => {
   const userStore = useUserStore();
   const user = await userStore.currentUser();
   userStore.loadingSesion = true;
-  if (user === null) {
+  if (user === null || !user?.emailVerified) {
     next();
   } else {
     next('/');
@@ -37,21 +37,25 @@ const routes = [
     component: HomeView,
     // Ruta protegida
     beforeEnter: requiereAutenticacion,
+    name: 'home',
   },
   {
     path: '/login',
     component: LoginView,
     beforeEnter: noRequiereAutenticacion,
+    name: 'login',
   },
   {
     path: '/register',
     component: RegisterView,
     beforeEnter: noRequiereAutenticacion,
+    name: 'register',
   },
   {
     path: '/edit/:id',
     component: EditView,
     beforeEnter: requiereAutenticacion,
+    name: 'edit',
   },
 ];
 
