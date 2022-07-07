@@ -5,6 +5,7 @@ import HomeView from './views/HomeView.vue';
 import LoginView from './views/LoginView.vue';
 import RegisterView from './views/RegisterView.vue';
 import EditView from './views/EditView.vue';
+import Profile from './views/Profile.vue';
 
 // Funcion para proteger la ruta home
 const requiereAutenticacion = async (to, from, next) => {
@@ -23,7 +24,7 @@ const noRequiereAutenticacion = async (to, from, next) => {
   const userStore = useUserStore();
   const user = await userStore.currentUser();
   userStore.loadingSesion = true;
-  if (user === null || !user?.emailVerified) {
+  if (!user || !user?.emailVerified) {
     next();
   } else {
     next('/');
@@ -42,13 +43,13 @@ const routes = [
   {
     path: '/login',
     component: LoginView,
-    beforeEnter: noRequiereAutenticacion,
+    // beforeEnter: noRequiereAutenticacion,
     name: 'login',
   },
   {
     path: '/register',
     component: RegisterView,
-    beforeEnter: noRequiereAutenticacion,
+    // beforeEnter: noRequiereAutenticacion,
     name: 'register',
   },
   {
@@ -56,6 +57,12 @@ const routes = [
     component: EditView,
     beforeEnter: requiereAutenticacion,
     name: 'edit',
+  },
+  {
+    path: '/profile',
+    component: Profile,
+    beforeEnter: requiereAutenticacion,
+    name: 'profile',
   },
 ];
 

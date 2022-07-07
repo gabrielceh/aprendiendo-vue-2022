@@ -70,15 +70,15 @@
   const userStore = useUserStore()
 
   const formState = reactive({
-    email: '',
-    password:''
+    email: 'gabrielcehu@gmail.com',
+    password:'123123'
   })
   // const email = ref('')
   // const password = ref('')
 
   const onFinish = async(values) =>{
     // validaciones : https://www.antdv.com/components/form#Validation-Rules
-    console.log(values);
+    // console.log(values);
     const res = await userStore.loginUser(formState.email, formState.password)
     // console.log(res);
     if(!res){

@@ -12,19 +12,29 @@
             Home
           </router-link> 
         </a-menu-item>
+
+        <a-menu-item key="profile" v-if="userStore.userData">
+          <router-link to="/profile" >
+            Perfil
+          </router-link> 
+        </a-menu-item>
+
         <a-menu-item key="login" v-if="!userStore.userData">
           <router-link to="/login">
             Login
           </router-link>
         </a-menu-item>
+
         <a-menu-item key="register" v-if="!userStore.userData">
           <router-link to="/register">
             Register
           </router-link>
         </a-menu-item>
+
         <a-menu-item v-if="userStore.userData" @click="userStore.logoutUser">
             Logout
         </a-menu-item>
+
       </a-menu>
     </a-layout-header>
 
